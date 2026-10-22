@@ -19,3 +19,9 @@ clear, non-overlapping file scopes.
 4. The Orchestrator verifies that the plan, design, implementation, and validation results are consistent before handing the completed dashboard back to the learner.
 
 All four agents leave staging, commits, and pushes to the learner.
+
+Orchestrator, Planner, Coder, and Designer.
+The model assigned to each agent.
+The responsibility of each agent.
+The .github/agents/ file for each agent.
+How the team will work together to build Project Pulse.
