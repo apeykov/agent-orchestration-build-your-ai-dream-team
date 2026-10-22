@@ -1,7 +1,7 @@
 ---
 name: Orchestrator
 description: Coordinates Planner, Coder, and Designer agents from the GitHub Copilot CLI.
-model: Claude Opus 5.5 (copilot)
+model: Claude Sonnet 5.5 (copilot)
 tools: ['read', 'agent', 'memory']
 ---
 

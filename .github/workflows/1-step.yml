@@ -130,31 +130,31 @@ jobs:
           keyphrase: Designer
           case-sensitive: false
 
-      - name: Check for updated models
-        id: check-opus-model
+      - name: Check for Claude Sonnet 5.5 model
+        id: check-sonnet-model
         continue-on-error: true
         uses: skills/action-keyphrase-checker@v2
         with:
           text-file: docs/agent-team.md
-          keyphrase: Opus 5.5
+          keyphrase: Claude Sonnet 5.5
           case-sensitive: false
 
-      - name: Check for GPT-5.5 model
-        id: check-gpt-model
+      - name: Check for GPT-5.6 Terra model
+        id: check-gpt-terra-model
         continue-on-error: true
         uses: skills/action-keyphrase-checker@v2
         with:
           text-file: docs/agent-team.md
-          keyphrase: GPT-5.5
+          keyphrase: GPT-5.6 Terra
           case-sensitive: false
 
-      - name: Check for Gemini model
-        id: check-gemini-model
+      - name: Check for Gemini 3.8 Flash model
+        id: check-gemini-flash-model
         continue-on-error: true
         uses: skills/action-keyphrase-checker@v2
         with:
           text-file: docs/agent-team.md
-          keyphrase: Gemini 3.7 Flash
+          keyphrase: Gemini 3.8 Flash
           case-sensitive: false
 
       - name: Check learner references agent definitions
@@ -205,7 +205,7 @@ jobs:
               - description: "Checked for the Designer role"
                 passed: ${{ steps.check-designer.outcome == 'success' }}
               - description: "Checked for the updated model assignments"
-                passed: ${{ steps.check-opus-model.outcome == 'success' && steps.check-gpt-model.outcome == 'success' && steps.check-gemini-model.outcome == 'success' }}
+                passed: ${{ steps.check-sonnet-model.outcome == 'success' && steps.check-gpt-terra-model.outcome == 'success' && steps.check-gemini-flash-model.outcome == 'success' }}
               - description: "Checked that the summary references .github/agents"
                 passed: ${{ steps.check-agent-definition-reference.outcome == 'success' }}
               - description: "Checked for Project Pulse context"
