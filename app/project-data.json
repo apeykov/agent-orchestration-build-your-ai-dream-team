@@ -1,0 +1,52 @@
+{
+  "projects": [
+    {
+      "name": "Northstar Customer Portal",
+      "owner": "Maya Chen",
+      "status": "On Track",
+      "recentActivity": "Completed usability testing with 12 pilot customers.",
+      "priority": "High",
+      "summary": "A self-service workspace for account management, support requests, and product updates."
+    },
+    {
+      "name": "Atlas Data Migration",
+      "owner": "Diego Alvarez",
+      "status": "At Risk",
+      "recentActivity": "Identified source-data quality issues in the legacy billing export.",
+      "priority": "High",
+      "summary": "Moves billing history into the unified analytics platform before the fiscal-year close."
+    },
+    {
+      "name": "Mobile Release 4.2",
+      "owner": "Priya Nair",
+      "status": "Active",
+      "recentActivity": "Submitted the release candidate for accessibility review.",
+      "priority": "Medium",
+      "summary": "Improves offline task capture and notification controls in the field app."
+    },
+    {
+      "name": "Supplier Security Review",
+      "owner": "Elliot Brooks",
+      "status": "Blocked",
+      "recentActivity": "Awaiting a completed penetration-test report from the vendor.",
+      "priority": "High",
+      "summary": "Validates security controls before the new procurement platform can go live."
+    },
+    {
+      "name": "Knowledge Base Refresh",
+      "owner": "Sofia Martins",
+      "status": "Paused",
+      "recentActivity": "Paused pending alignment on the new support-content taxonomy.",
+      "priority": "Low",
+      "summary": "Reorganizes contributor guides and support articles for faster discovery."
+    },
+    {
+      "name": "Sustainability Metrics",
+      "owner": "Noah Williams",
+      "status": "Completed",
+      "recentActivity": "Published the quarterly emissions dashboard to leadership.",
+      "priority": "Medium",
+      "summary": "Consolidates energy, travel, and waste reporting into a repeatable quarterly process."
+    }
+  ]
+}

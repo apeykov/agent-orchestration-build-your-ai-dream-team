@@ -1,0 +1,145 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Project Pulse</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <main class="dashboard">
+    <header class="dashboard__header">
+      <p class="dashboard__eyebrow">Team delivery overview</p>
+      <h1>Project Pulse</h1>
+      <p class="dashboard__intro">A quick view of active work, ownership, and the latest project updates.</p>
+    </header>
+
+    <section aria-labelledby="projects-heading">
+      <div class="dashboard__section-heading">
+        <h2 id="projects-heading">Projects</h2>
+      </div>
+      <p id="project-status" class="dashboard__status" role="status" aria-live="polite">Loading projects…</p>
+      <div id="project-list" class="project-grid" aria-live="polite" aria-busy="true"></div>
+    </section>
+  </main>
+
+  <script>
+    "use strict";
+
+    const projectList = document.getElementById("project-list");
+    const projectStatus = document.getElementById("project-status");
+    const supportedStatuses = new Set(["Active", "On Track", "At Risk", "Blocked", "Paused", "Completed"]);
+    const supportedPriorities = new Set(["High", "Medium", "Low"]);
+
+    function displayValue(value, fallback) {
+      return typeof value === "string" && value.trim() ? value.trim() : fallback;
+    }
+
+    function modifierFor(value, supportedValues) {
+      if (!supportedValues.has(value)) {
+        return "unknown";
+      }
+
+      return value.toLowerCase().replace(/\s+/g, "-");
+    }
+
+    function createDetail(label, value, className) {
+      const detail = document.createElement("p");
+      detail.className = className;
+
+      const labelElement = document.createElement("strong");
+      labelElement.textContent = label + ": ";
+      detail.append(labelElement, document.createTextNode(value));
+      return detail;
+    }
+
+    function createProjectCard(project) {
+      const name = displayValue(project.name, "Untitled project");
+      const owner = displayValue(project.owner, "Not assigned");
+      const status = displayValue(project.status, "Unknown");
+      const priority = displayValue(project.priority, "Unknown");
+      const recentActivity = displayValue(project.recentActivity, "No recent activity available.");
+      const summary = displayValue(project.summary, "");
+
+      const card = document.createElement("article");
+      card.className = "project-card";
+
+      const heading = document.createElement("h3");
+      heading.className = "project-card__name";
+      heading.textContent = name;
+      card.append(heading);
+
+      const statusBadge = document.createElement("p");
+      statusBadge.className = "status-badge status-badge--" + modifierFor(status, supportedStatuses);
+      statusBadge.textContent = "Status: " + status;
+      card.append(statusBadge);
+
+      card.append(createDetail("Owner", owner, "project-card__owner"));
+
+      const priorityDetail = createDetail("Priority", priority, "priority priority--" + modifierFor(priority, supportedPriorities));
+      card.append(priorityDetail);
+
+      card.append(createDetail("Recent activity", recentActivity, "project-card__activity"));
+
+      if (summary) {
+        const summaryElement = document.createElement("p");
+        summaryElement.className = "project-card__summary";
+        summaryElement.textContent = summary;
+        card.append(summaryElement);
+      }
+
+      return card;
+    }
+
+    function showMessage(message, isError) {
+      projectList.replaceChildren();
+      projectList.setAttribute("aria-busy", "false");
+      projectStatus.textContent = message;
+      projectStatus.className = isError
+        ? "dashboard__status dashboard__status--error"
+        : "dashboard__status";
+    }
+
+    async function loadProjects() {
+      try {
+        const response = await fetch("project-data.json");
+        if (!response.ok) {
+          throw new Error("The project data request returned " + response.status + ".");
+        }
+
+        let data;
+        try {
+          data = await response.json();
+        } catch (error) {
+          showMessage("Project data is malformed. Check project-data.json and try again.", true);
+          return;
+        }
+
+        if (!data || !Array.isArray(data.projects)) {
+          showMessage("Project data is malformed. It must contain a projects array.", true);
+          return;
+        }
+
+        if (data.projects.length === 0) {
+          showMessage("There are no projects to display yet.", false);
+          return;
+        }
+
+        const cards = data.projects.map(function (project) {
+          return createProjectCard(project && typeof project === "object" ? project : {});
+        });
+
+        projectList.replaceChildren(...cards);
+        projectList.setAttribute("aria-busy", "false");
+        projectStatus.textContent = data.projects.length + " projects loaded.";
+        projectStatus.className = "dashboard__status";
+      } catch (error) {
+        console.error("Unable to load Project Pulse data:", error);
+        showMessage("We couldn’t retrieve project data. Run the Project Pulse Dashboard launch configuration and try again.", true);
+      }
+    }
+
+    loadProjects();
+  </script>
+</body>
+</html>
